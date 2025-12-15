@@ -1,5 +1,3 @@
-from pathlib import Path
-
 def parseBMP(filePath: str) -> list:
     """
     Takes in the file path of the bitmap image and parses the header and
@@ -32,8 +30,38 @@ def parseBMP(filePath: str) -> list:
             # skipping useless values in DIB header
             bmp.read(2)
             
+            color_depth = int.from_bytes(bmp.read(2), 'little')
+            
+            # seeking to where the pixel data starts
+            bmp.seek(pixel_offset)
+            
+            # calculating total number of bytes necessary to store one
+            # row of pixels and the padding in each row
+            row_size = ((color_depth * width + 31) // 32) * 4
+            padding = row_size - ((color_depth * width) // 8)
+            
+            for _ in range(abs(height)):
+                row = []
+                for _ in range(width):
+                    if color_depth == 24:
+                        blue = ord(bmp.read(1))
+                        green = ord(bmp.read(1))
+                        red = ord(bmp.read(1))
+                        row.append((red, green, blue))
+                    elif color_depth == 32:
+                        blue = ord(bmp.read(1))
+                        green = ord(bmp.read(1))
+                        red = ord(bmp.read(1))
+                        bmp.read(1) #skipping the alpha channel
+                        row.append((red, green, blue))
+                    else:
+                        raise ValueError("Unsupported bit depth")
+                bmp.read(padding)  #skip padding bytes
+                pixel_data.append(row)
+            
     except FileNotFoundError:
         print("Error : The file was not found at the specified location!")
     
     return pixel_data
     
+print(parseBMP("./random_image.bmp"))
