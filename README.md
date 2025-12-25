@@ -69,7 +69,31 @@ If the output image appears too large, adjust the scaling factor:
 - Locate the `SCALE` variable and increase it's value
 
 ---
-
+## File Structure 🌲
+```
+├── README.md
+├── samples/
+│   ├── sample1 in ascii.jpeg
+│   ├── sample1.bmp
+│   ├── sample2 in ascii.jpeg
+│   ├── sample2.bmp
+│   ├── sample3 in ascii.jpeg
+│   └── sample3.bmp
+└── src/
+    ├── ascii.py
+    ├── image_processor.py
+    ├── main.py
+    ├── parser.py
+    └── __pycache__/
+        ├── ascii.cpython-311.pyc
+        ├── ascii.cpython-313.pyc
+        ├── image_processor.cpython-311.pyc
+        ├── image_processor.cpython-313.pyc
+        ├── main.cpython-313.pyc
+        ├── parser.cpython-311.pyc
+        └── parser.cpython-313.pyc
+```
+---
 # Notes
 
 - Works only with bitmap images
